@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   //Use of map data structure
-   final questions = const [
+   final _questions = const [
       {
       'questionText':'What\'s favorite color?',
       'answers': ['Black', 'Blue', 'Red', 'Yellow'],
@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
 
   void _answerSelected(){
 
-    if(_questionIndex < questions.length){
+    if(_questionIndex < _questions.length){
         print("No more questions!");
     }
 
@@ -54,18 +54,9 @@ class _MyAppState extends State<MyApp> {
           title : Text("First App"),
         ),
         //Widget controlled by condition
-        body: _questionIndex < questions.length ? Column(
-          children: [
-                  Question(
-                    // using custom Question widget class, sending data to constructor
-                    questions[_questionIndex]['questionText'] as String,
-                  ),
-                  // Sending answers/options related to a question one by one to answer widget class. 
-                  ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
-                    return Answer( _answerSelected, answer); 
-                  }).toList()
-          ],
-        ) : Center(child: Text("Quiz is over!")),
+        body: _questionIndex < _questions.length 
+        ? Quiz(_answerSelected, _questions)
+        : Center(child: Text("Quiz is over!")),
         ),
     );
   }
