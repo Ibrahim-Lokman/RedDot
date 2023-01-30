@@ -24,10 +24,13 @@ class MyHomePage extends StatelessWidget {
         ) ,
       body : Column(
         children: <Widget>[
-          Card(
-            //here card size will depends on Text widget, so we can not increase size
-            child : Text("Upper Portion"),
-            elevation : 5,
+          Container(
+            width: double.infinity,
+            child: Card( 
+              color: Colors.blue,
+              child : Text("Upper Portion"),
+              elevation : 5,
+            ),
           ),
           Card(
             child : Text("Lower Portion"),
