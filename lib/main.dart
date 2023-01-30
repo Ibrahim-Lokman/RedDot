@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
 
   final List<Transaction> transactions = [
-    Transaction(id: '2', title: 'Black Sports Shoe', amount: 3999, date: DateTime.now()),
-    Transaction(id: '3', title: 'Jet Black Shirt', amount: 3270, date: DateTime.now()),
-    Transaction(id: '4', title: 'White jeans', amount: 1500, date: DateTime.now()),
-    Transaction(id: '5', title: 'Water', amount: 60, date: DateTime.now()),
+    Transaction(id: '2', title: 'Black Sports Shoe', amount: 38, date: DateTime.now()),
+    Transaction(id: '3', title: 'Jet Black Shirt', amount: 30, date: DateTime.now()),
+    Transaction(id: '4', title: 'White jeans', amount: 17, date: DateTime.now()),
+    Transaction(id: '5', title: 'Laptop', amount: 1000, date: DateTime.now()),
   ];
 
   @override
@@ -44,8 +44,56 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
           Column(
-            children: transactions.map((e) {
-              return Card(child: Text(e.title),);
+            children: transactions.map((tx) {
+              return Card(
+                child: Row( 
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget> [  
+                    Container(
+                      width: 125,
+                      padding: EdgeInsets.all(20),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 201, 202, 203),
+                        border: Border.all(
+                          width: 2,
+                          color: Colors.black
+                          )
+                      ),
+                      child: Text(
+                        "\$"+tx.amount.toString(),
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget> [
+                        Text(
+                          tx.title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.pink,
+                          ),
+                        ),
+                        Text(
+                          tx.date.toString(),
+                           style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                );
             }).toList(),
           ),
         ],
