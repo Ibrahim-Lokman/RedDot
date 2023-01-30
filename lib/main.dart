@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       title : 'Flutter App',
       home : MyHomePage(),
     );
-}
+  }
 }
 
 class MyHomePage extends StatelessWidget {
@@ -27,13 +27,10 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar : AppBar(
-        title: Text("Expense App"),
-        ) ,
+      appBar : AppBar( title: Text("Expense App"),) ,
       body : Column(
         mainAxisAlignment:  MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-
         children: <Widget>[
           Container(
             width: double.infinity,
@@ -64,7 +61,7 @@ class MyHomePage extends StatelessWidget {
                           )
                       ),
                       child: Text(
-                        "\$"+tx.amount.toString(),
+                        "\$ ${tx.amount}",
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
