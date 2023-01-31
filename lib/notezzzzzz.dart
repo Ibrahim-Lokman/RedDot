@@ -8,3 +8,8 @@
             // intl: ^0.18.0 package added in pubspec.yaml
 
             //List view has infinite height, therefore we need to wrap it with Container
+
+            //onSubmitted passes a value, onSubmitted : (_) => {functionName}
+            // (_) used when value is not important
+
+            
