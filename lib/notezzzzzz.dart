@@ -6,3 +6,5 @@
             //  children: <Widget>[] allows having multiple row (child) in  a column
 
             // intl: ^0.18.0 package added in pubspec.yaml
+
+            //List view has infinite height, therefore we need to wrap it with Container
