@@ -1,5 +1,6 @@
-import 'package:expense_app/transaction.dart';
+import 'package:expense_app/widgets/user_transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,83 +17,29 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  //String titleInput;
+  //String amountInput;
 
-  final List<Transaction> transactions = [
-    Transaction(id: '2', title: 'Black Sports Shoe', amount: 38, date: DateTime.now()),
-    Transaction(id: '3', title: 'Jet Black Shirt', amount: 30, date: DateTime.now()),
-    Transaction(id: '4', title: 'White jeans', amount: 17, date: DateTime.now()),
-    Transaction(id: '5', title: 'Laptop', amount: 1000, date: DateTime.now()),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar : AppBar( title: Text("Expense App"),) ,
-      body : Column(
-        mainAxisAlignment:  MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            child: Card( 
-              color: Colors.blue,
-              child : Text("Upper Portion \n ... \n ..."),
-              elevation : 5,
+      body : SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment:  MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Card( 
+                color: Colors.blue,
+                child : Text("Upper Portion \n ... \n ..."),
+                elevation : 5,
+              ),
             ),
-          ),
-          Column(
-            children: transactions.map((tx) {
-              return Card(
-                child: Row( 
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget> [  
-                    
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text(
-                          tx.title,
-                          style: TextStyle(
-                            
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.pink,
-                          ),
-                        ),
-                        Text(
-                          tx.date.toString(),
-                           style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),)
-                      ],
-                    ),
-                    Container(
-                      width: 100,
-                      padding: EdgeInsets.all(12),
-                      margin: EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 15,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 154, 209, 200),
-                        border: Border.all(
-                          width: 2,
-                          color: Colors.black
-                          )
-                      ),
-                      child: Text(
-                        "\$ ${tx.amount}",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                    ),
-                    ],
-                ),
-                );
-            }).toList(),
-          ),],
+            UserTransaction()
+           ],
+        ),
       ),
     );
   }

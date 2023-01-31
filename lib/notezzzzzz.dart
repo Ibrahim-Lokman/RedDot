@@ -4,3 +4,5 @@
             //for controlling size 
 
             //  children: <Widget>[] allows having multiple row (child) in  a column
+
+            // intl: ^0.18.0 package added in pubspec.yaml
