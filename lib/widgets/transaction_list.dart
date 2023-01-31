@@ -12,9 +12,10 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
       height: 500,
-        child: ListView(
-                children: transactions.map((tx) {
-                  return Card(
+        child: ListView.builder(
+          itemCount: transactions.length,
+          itemBuilder: (ctx, index){
+             return Card(
                     child: Row( 
                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget> [  
@@ -22,7 +23,7 @@ class TransactionList extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget> [
                             Text(
-                              tx.title,
+                              transactions[index].title,
                               style: TextStyle(
                                 
                                 fontSize: 18,
@@ -32,7 +33,7 @@ class TransactionList extends StatelessWidget {
                             ),
                             Text(
                               //DateFormat('yyyy-MM-dd')
-                              DateFormat().format(tx.date),
+                              DateFormat().format(transactions[index].date),
                                style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class TransactionList extends StatelessWidget {
                               )
                           ),
                           child: Text(
-                            "\$ ${tx.amount}",
+                            "\$ ${transactions[index].amount}",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -65,8 +66,8 @@ class TransactionList extends StatelessWidget {
                         ],
                     ),
                     );
-                }).toList(),
-              ),
-    );
+                    }
+                ),
+              );
   }
 }
