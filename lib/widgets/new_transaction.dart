@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 class NewTransaction extends StatefulWidget {
 
   final Function addTx;
@@ -13,28 +14,47 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
 
-  final amountController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
-  void submitData(){
-
-    final entererdTiltle = titleController.text;
-    final entererdAmount = double.parse(amountController.text);
+  void _submitData(){
+    if (_amountController.text.isEmpty){
+        return;
+    }
+    final entererdTiltle = _titleController.text;
+    final entererdAmount = double.parse(_amountController.text);
     
-    if(entererdTiltle.isEmpty || entererdAmount <= 0) {
+    if(entererdTiltle.isEmpty || entererdAmount <= 0 || _selectedDate == null) {
       return;
     }
 
     widget.addTx(
        entererdTiltle, 
-       entererdAmount
+       entererdAmount,
+       _selectedDate,
     );
     
-
     //close/pop the topmost widget
     Navigator.of(context).pop();
+  }
 
+  void _presentDataPicker(){
+    showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(), 
+      firstDate: DateTime(2019), 
+      lastDate: DateTime.now(),
+    ).then((pickedData) {
+       if(pickedData == null) {
+        return;
+       }
+       setState(() {
+          _selectedDate = pickedData;
+       });
+    });
+    print('...');
   }
 
   @override
@@ -48,28 +68,54 @@ class _NewTransactionState extends State<NewTransaction> {
                 children: <Widget>[
                   TextField(
                     decoration: InputDecoration(labelText: 'Title'),
-                    controller: titleController,
-                    onSubmitted: (_) => submitData(),
+                    controller: _titleController,
+                    onSubmitted: (_) => _submitData(),
                     //onChanged: (value){},
                   ),
                   TextField(
                     decoration: InputDecoration(labelText: 'Amount'),
-                    controller: amountController,
+                    controller: _amountController,
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    onSubmitted: (_) => submitData(),
+                    onSubmitted: (_) => _submitData(),
                     //onChanged: (value){},
                     
                   ),
-                    TextButton(
 
-                       onPressed: submitData,
+                  Container(
+                    height: 75,
+                    child: Row(
+                      children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          _selectedDate == null 
+                          ? 'No Date Chosen!' 
+                          : DateFormat.yMd().format(_selectedDate),
+                          ),
+                      ),
+                      TextButton(
+                         onPressed: _presentDataPicker,
+                         style: TextButton.styleFrom(
+                              foregroundColor: Colors.pink,
+                             ),
+                         child: Text('Choose Date',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    ),
+                                  
+                                   ),
+                      ),
+                    ],),
+                  ),
+
+                  TextButton(
+                       onPressed: _submitData,
                        style: TextButton.styleFrom(
                             foregroundColor: Colors.pink,
-                          //  backgroundColor: Color.fromARGB(255, 154, 209, 200),
                            ),
                        child: Text('Add Transaction',
                                 style: TextStyle(fontSize: 20),
-                                 ),
+                                 ),   
                     ),
                 ],
               ),

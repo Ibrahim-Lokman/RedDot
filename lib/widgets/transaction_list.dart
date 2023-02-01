@@ -44,7 +44,7 @@ class TransactionList extends StatelessWidget {
                margin: EdgeInsets.symmetric(
                 vertical: 8,
                 horizontal: 5
-              ),
+                ),
                child: ListTile(
                 leading: CircleAvatar(
                   radius: 30, 
