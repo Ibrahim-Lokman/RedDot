@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:expense_app/widgets/new_transaction.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +15,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title : 'Flutter App',
+      title : 'Expense Tracker',
       theme : ThemeData(
         primarySwatch: Colors.blueGrey,  
         accentColor: Colors.pink,
+        fontFamily: 'Branda',
+        appBarTheme: AppBarTheme(
+          toolbarTextStyle: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'ChrustyRock',
+              fontSize: 20,
+            ),
+          ).bodyText2, 
+          titleTextStyle: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'ChrustyRock',
+              fontSize: 20,
+            ),
+          ).headline6,
+        )
       ),
       home : MyHomePage(),
     );
@@ -69,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar : AppBar( 
-        title: Text("Expense Tracker"),
+        title: Text(
+          "Expense Tracker"
+          ),
         actions: <Widget>[
           IconButton(
             onPressed: () => _startAddNewTransaction(context), 
