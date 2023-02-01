@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'models/transaction.dart';
+import 'widgets/chart.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,17 +20,17 @@ class MyApp extends StatelessWidget {
       theme : ThemeData(
         primarySwatch: Colors.blueGrey,  
         accentColor: Colors.pink,
-        fontFamily: 'Branda',
+        fontFamily: 'ChrustyRock',
         appBarTheme: AppBarTheme(
           toolbarTextStyle: ThemeData.light().textTheme.copyWith(
             headline6: TextStyle(
-              fontFamily: 'ChrustyRock',
+              fontFamily: 'Branda',
               fontSize: 20,
             ),
           ).bodyText2, 
           titleTextStyle: ThemeData.light().textTheme.copyWith(
             headline6: TextStyle(
-              fontFamily: 'ChrustyRock',
+              fontFamily: 'Branda',
               fontSize: 20,
             ),
           ).headline6,
@@ -54,6 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(id: '4', title: 'White jeans', amount: 17, date: DateTime.now()),
     Transaction(id: '5', title: 'Laptop', amount: 1000, date: DateTime.now()),
  */ ];
+
+  List<Transaction> get _recentTransactions {
+
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ), 
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
@@ -101,14 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment:  MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Container(
-                width: double.infinity,
-                child: Card( 
-                  color: Colors.blue,
-                  child : Text("Upper Portion \n ... \n ..."),
-                  elevation : 5,
-                ),
-              ),
+              Chart(_recentTransactions),
               TransactionList(_userTransactions),
             ],
           ),
