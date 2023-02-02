@@ -3,12 +3,18 @@ import 'dart:ui';
 import 'package:expense_app/widgets/new_transaction.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'models/transaction.dart';
 import 'widgets/chart.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   runApp(MyApp());
 }
 
@@ -106,8 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar : AppBar( 
+    final appBar = AppBar( 
         title: Text(
           "Expense Tracker"
           ),
@@ -117,14 +122,26 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.add),
             )
         ]
-        ) ,
+        );  
+    return Scaffold(
+      appBar : appBar,
         body : SingleChildScrollView(
           child: Column(
            // mainAxisAlignment:  MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Chart(_recentTransactions),
-                TransactionList(_userTransactions, _deleteTransaction),
+              Container(
+                height: (MediaQuery.of(context).size.height - 
+                          appBar.preferredSize.height - 
+                          MediaQuery.of(context).padding.top) * 0.25,
+                child: Chart(_recentTransactions),
+                ),
+              Container(
+                height: (MediaQuery.of(context).size.height - 
+                          appBar.preferredSize.height - 
+                          MediaQuery.of(context).padding.top) * 0.65,
+                child: TransactionList(_userTransactions, _deleteTransaction),
+                ),
             ],
           ),
       ),
