@@ -10,6 +10,8 @@ import 'models/transaction.dart';
 import 'widgets/chart.dart';
 
 void main() {
+
+  //turn off landscape feature
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
