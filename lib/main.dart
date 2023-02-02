@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:expense_app/models/education.dart';
+import 'package:expense_app/widgets/edu_list.dart';
+import 'package:expense_app/widgets/education_list.dart';
 import 'package:expense_app/widgets/new_transaction.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(id: '4', title: 'White jeans', amount: 17, date: DateTime.now()),
     Transaction(id: '5', title: 'Laptop', amount: 1000, date: DateTime.now()),
  */ ];
+
+
+// extra
+     final List<Education> _userEducations = [  ];
+
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
@@ -68,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }).toList();
   }
+  
   void _addNewTransaction(
     String txTitle, 
     double txAmount, 
@@ -83,6 +92,21 @@ class _MyHomePageState extends State<MyHomePage> {
       _userTransactions.add(newTx);
     });  
   }
+
+//extra
+  void _addNewEducation( String eduTitle, int eduYear) {
+      final newEdu = Education(
+      id: DateTime.now().toString(), 
+      titleEdu: eduTitle, 
+      year: eduYear, 
+      );
+    
+    setState(() {
+      _userEducations.add(newEdu);
+    });  
+  }
+
+  
   //String titleInput;
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
@@ -96,6 +120,22 @@ class _MyHomePageState extends State<MyHomePage> {
       },);
   }
 
+
+//Extra
+  void _startAddNewEducation(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx, 
+      builder: (_) {
+         return GestureDetector(
+         // onTap: () {},
+          child: NewEducation(_addNewEducation),
+        //  behavior: HitTestBehavior.,
+          );
+      },);
+  }
+
+
+
   void _deleteTransaction(String id){
     setState(() {
       _userTransactions.removeWhere((tx) {
@@ -104,6 +144,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+
+//extra
+  void _deleteEducation(String id){
+    setState(() {
+      _userEducations.removeWhere((edu) {
+        return edu.id == id;
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(
           "Expense Tracker"
           ),
+          
         actions: <Widget>[
           IconButton(
             onPressed: () => _startAddNewTransaction(context), 
@@ -123,16 +175,30 @@ class _MyHomePageState extends State<MyHomePage> {
            // mainAxisAlignment:  MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Chart(_recentTransactions),
-                TransactionList(_userTransactions, _deleteTransaction),
+             // Chart(_recentTransactions),
+              //TransactionList(_userTransactions, _deleteTransaction),
+              Card(child: NewEducation(_addNewEducation)),
+              
+              Card(child: EducationList(_userEducations, _deleteEducation)),
             ],
           ),
       ),
+
+      /*
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startAddNewEducation(context),
+        ),
+     */
+     /*
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _startAddNewTransaction(context),
         ),
+
+        */
     );
   }
 }
