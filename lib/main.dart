@@ -27,14 +27,14 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
           ),
         ),
-        appBarTheme: AppBarTheme(
+        appBarTheme : AppBarTheme(
           toolbarTextStyle: ThemeData.light().textTheme.copyWith(
             headline6: TextStyle(
               fontFamily: 'Branda',
               fontSize: 20,
             ),
           ).bodyText2, 
-          titleTextStyle: ThemeData.light().textTheme.copyWith(
+         titleTextStyle : ThemeData.light().textTheme.copyWith(
             headline6: TextStyle(
               fontFamily: 'Branda',
               fontSize: 20,
@@ -53,17 +53,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
    final List<Transaction> _userTransactions = [ /*
     Transaction(id: '2', title: 'Black Sports Shoe', amount: 38, date: DateTime.now()),
     Transaction(id: '3', title: 'Jet Black Shirt', amount: 30, date: DateTime.now()),
     Transaction(id: '4', title: 'White jeans', amount: 17, date: DateTime.now()),
     Transaction(id: '5', title: 'Laptop', amount: 1000, date: DateTime.now()),
  */ ];
-
   List<Transaction> get _recentTransactions {
-
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
@@ -72,10 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }).toList();
   }
-
-  void _addNewTransaction(String txTitle, double txAmount, DateTime chosenDate) {
+  void _addNewTransaction(
+    String txTitle, 
+    double txAmount, 
+    DateTime chosenDate) {
     final newTx = Transaction(
-      id: DateTime.now.toString(), 
+      id: DateTime.now().toString(), 
       title: txTitle, 
       amount: txAmount, 
       date: chosenDate,
@@ -83,11 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
     
     setState(() {
       _userTransactions.add(newTx);
-    });
-  
+    });  
   }
-
- 
   //String titleInput;
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
@@ -99,6 +94,14 @@ class _MyHomePageState extends State<MyHomePage> {
           behavior: HitTestBehavior.opaque,
           );
       },);
+  }
+
+  void _deleteTransaction(String id){
+    setState(() {
+      _userTransactions.removeWhere((tx) {
+        return tx.id == id;
+      });
+    });
   }
 
   @override
@@ -117,11 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ) ,
         body : SingleChildScrollView(
           child: Column(
-            mainAxisAlignment:  MainAxisAlignment.center,
+           // mainAxisAlignment:  MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Chart(_recentTransactions),
-              TransactionList(_userTransactions),
+                TransactionList(_userTransactions, _deleteTransaction),
             ],
           ),
       ),
