@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:expense_app/widgets/new_transaction.dart';
@@ -140,56 +141,61 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
     return Scaffold(
       appBar : appBar,
-        body : SingleChildScrollView(
-          child: Column(
-
-           // mainAxisAlignment:  MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              if(isLandscape) Container(
-                height: (MediaQuery.of(context).size.height - 
-                              appBar.preferredSize.height - 
-                              MediaQuery.of(context).padding.top) * 0.05,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Show Chart'),
-                    Switch.adaptive(value: _showChart, onChanged: (val){
-                      setState(() {
-                        _showChart = val;
-                      });
-                    },),
-                  ],
+        body : SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+        
+             // mainAxisAlignment:  MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                if(isLandscape) Container(
+                  height: (MediaQuery.of(context).size.height - 
+                                appBar.preferredSize.height - 
+                                MediaQuery.of(context).padding.top) * 0.05,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Show Chart'),
+                      Switch.adaptive(value: _showChart, onChanged: (val){
+                        setState(() {
+                          _showChart = val;
+                        });
+                      },),
+                    ],
+                  ),
                 ),
+        
+                if(!isLandscape) Container(
+                      height: (MediaQuery.of(context).size.height - 
+                                appBar.preferredSize.height - 
+                                MediaQuery.of(context).padding.top) * 0.4,
+                      child: Chart(_recentTransactions),
+                      ),
+                if(!isLandscape) txTransactionList,
+                if(isLandscape) _showChart 
+                ?
+                 Column(
+                   children: [
+                     Container(
+                      height: (MediaQuery.of(context).size.height - 
+                                appBar.preferredSize.height - 
+                                MediaQuery.of(context).padding.top) * 0.7,
+                      child: Chart(_recentTransactions),
+                      ),
+                   ],
+                 ) 
+                :
+                txTransactionList
+                
+              ],
+            ),
               ),
-
-              if(!isLandscape) Container(
-                    height: (MediaQuery.of(context).size.height - 
-                              appBar.preferredSize.height - 
-                              MediaQuery.of(context).padding.top) * 0.4,
-                    child: Chart(_recentTransactions),
-                    ),
-              if(!isLandscape) txTransactionList,
-              if(isLandscape) _showChart 
-              ?
-               Column(
-                 children: [
-                   Container(
-                    height: (MediaQuery.of(context).size.height - 
-                              appBar.preferredSize.height - 
-                              MediaQuery.of(context).padding.top) * 0.7,
-                    child: Chart(_recentTransactions),
-                    ),
-                 ],
-               ) 
-              :
-              txTransactionList
-              
-            ],
-          ),
-      ),
+        ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Platform.isIOS
+      ? 
+      Container()
+      : FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _startAddNewTransaction(context),
         ),
