@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Show Chart'),
-                    Switch(value: _showChart, onChanged: (val){
+                    Switch.adaptive(value: _showChart, onChanged: (val){
                       setState(() {
                         _showChart = val;
                       });
@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              
+
               if(!isLandscape) Container(
                     height: (MediaQuery.of(context).size.height - 
                               appBar.preferredSize.height - 
