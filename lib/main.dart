@@ -162,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+              
               if(!isLandscape) Container(
                     height: (MediaQuery.of(context).size.height - 
                               appBar.preferredSize.height - 
