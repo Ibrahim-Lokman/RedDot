@@ -10,19 +10,22 @@ import 'models/transaction.dart';
 import 'widgets/chart.dart';
 
 void main() {
-
+/*
   //turn off landscape feature
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
+
+  */
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title : 'Expense Tracker',
       theme : ThemeData(
@@ -117,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     final appBar = AppBar( 
         title: Text(
           "Expense Tracker"
@@ -127,7 +131,13 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.add),
             )
         ]
-        );  
+        );
+    final txTransactionList =   Container(
+                height: (MediaQuery.of(context).size.height - 
+                          appBar.preferredSize.height - 
+                          MediaQuery.of(context).padding.top) * 0.7,
+                child: TransactionList(_userTransactions, _deleteTransaction),
+                );
     return Scaffold(
       appBar : appBar,
         body : SingleChildScrollView(
@@ -136,29 +146,44 @@ class _MyHomePageState extends State<MyHomePage> {
            // mainAxisAlignment:  MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Show Chart'),
-                  Switch(value: _showChart, onChanged: (val){
-                    setState(() {
-                      _showChart = val;
-                    });
-                  },),
-                ],
-              ),
-              _showChart ? Container(
+              if(isLandscape) Container(
                 height: (MediaQuery.of(context).size.height - 
-                          appBar.preferredSize.height - 
-                          MediaQuery.of(context).padding.top) * 0.7,
-                child: Chart(_recentTransactions),
-                ) :
-              Container(
-                height: (MediaQuery.of(context).size.height - 
-                          appBar.preferredSize.height - 
-                          MediaQuery.of(context).padding.top) * 0.7,
-                child: TransactionList(_userTransactions, _deleteTransaction),
+                              appBar.preferredSize.height - 
+                              MediaQuery.of(context).padding.top) * 0.05,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Show Chart'),
+                    Switch(value: _showChart, onChanged: (val){
+                      setState(() {
+                        _showChart = val;
+                      });
+                    },),
+                  ],
                 ),
+              ),
+              if(!isLandscape) Container(
+                    height: (MediaQuery.of(context).size.height - 
+                              appBar.preferredSize.height - 
+                              MediaQuery.of(context).padding.top) * 0.4,
+                    child: Chart(_recentTransactions),
+                    ),
+              if(!isLandscape) txTransactionList,
+              if(isLandscape) _showChart 
+              ?
+               Column(
+                 children: [
+                   Container(
+                    height: (MediaQuery.of(context).size.height - 
+                              appBar.preferredSize.height - 
+                              MediaQuery.of(context).padding.top) * 0.7,
+                    child: Chart(_recentTransactions),
+                    ),
+                 ],
+               ) 
+              :
+              txTransactionList
+              
             ],
           ),
       ),
