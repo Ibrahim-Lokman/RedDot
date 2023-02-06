@@ -119,9 +119,58 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List <Widget> _buildLandscapeContent(MediaQueryData mediaQuery, AppBar appBar, Widget txList){
+    return [Container(
+                  height: (MediaQuery.of(context).size.height - 
+                                appBar.preferredSize.height - 
+                                MediaQuery.of(context).padding.top) * 0.05,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Show Chart'),
+                      Switch.adaptive(value: _showChart, onChanged: (val){
+                        setState(() {
+                          _showChart = val;
+                        });
+                      },),
+                    ],
+                  ),
+                ), _showChart 
+                ?
+                 Column(
+                   children: [
+                     Container(
+                      height: (MediaQuery.of(context).size.height - 
+                                appBar.preferredSize.height - 
+                                MediaQuery.of(context).padding.top) * 0.7,
+                      child: Chart(_recentTransactions),
+                      ),
+                   ],
+                 )
+                 :
+                 txList
+                ];
+  }
+
+  List<Widget> _buildPortraitContent(
+    MediaQueryData mediaQuery, 
+    AppBar appBar,
+    Widget txList
+    ){
+    return [Container(
+                      height: (MediaQuery.of(context).size.height - 
+                                appBar.preferredSize.height - 
+                                MediaQuery.of(context).padding.top) * 0.4,
+                      child: Chart(_recentTransactions),
+                      ), txList];
+  } 
+
   @override
   Widget build(BuildContext context) {
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+
     final appBar = AppBar( 
         title: Text(
           "Expense Tracker"
@@ -148,45 +197,19 @@ class _MyHomePageState extends State<MyHomePage> {
              // mainAxisAlignment:  MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                if(isLandscape) Container(
-                  height: (MediaQuery.of(context).size.height - 
-                                appBar.preferredSize.height - 
-                                MediaQuery.of(context).padding.top) * 0.05,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Show Chart'),
-                      Switch.adaptive(value: _showChart, onChanged: (val){
-                        setState(() {
-                          _showChart = val;
-                        });
-                      },),
-                    ],
+                if(isLandscape) 
+                ..._buildLandscapeContent(
+                  mediaQuery, 
+                  appBar, 
+                  txTransactionList,
                   ),
-                ),
         
-                if(!isLandscape) Container(
-                      height: (MediaQuery.of(context).size.height - 
-                                appBar.preferredSize.height - 
-                                MediaQuery.of(context).padding.top) * 0.4,
-                      child: Chart(_recentTransactions),
-                      ),
-                if(!isLandscape) txTransactionList,
-                if(isLandscape) _showChart 
-                ?
-                 Column(
-                   children: [
-                     Container(
-                      height: (MediaQuery.of(context).size.height - 
-                                appBar.preferredSize.height - 
-                                MediaQuery.of(context).padding.top) * 0.7,
-                      child: Chart(_recentTransactions),
-                      ),
-                   ],
-                 ) 
-                :
-                txTransactionList
-                
+                if(!isLandscape) 
+                ..._buildPortraitContent(
+                  mediaQuery, 
+                  appBar,
+                  txTransactionList,
+                  ),                
               ],
             ),
               ),
